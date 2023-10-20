@@ -1,0 +1,8 @@
+{
+    "filters": false,
+    "inputs": [
+        "inputs/ET_LLS_DDOS_1.0-dmz_allerts.csv",
+        "inputs/ET_LLS_DDOS_1.0-inside_allerts.csv"
+    ],
+    
+}
