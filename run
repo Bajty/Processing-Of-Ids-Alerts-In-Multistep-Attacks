@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -ex
+
+# This is the master script for the capsule. When you click "Reproducible Run", the code in this file will execute.
+python -u ./code/main.py -c ./code/config-DARPA_ET_1.json
+python -u ./code/main.py -c ./code/config-DARPA_ET_2.json
+python -u ./code/main.py -c ./code/config-DARPA_NF_1.json
+python -u ./code/main.py -c ./code/config-DARPA_NF_2.json
+python -u ./code/main.py -c ./code/config-DARPA_SC_1.json
+python -u ./code/main.py -c ./code/config-DARPA_SC_2.json
+python -u ./code/main.py -c ./code/config-iscx2012_ET.json
+python -u ./code/main.py -c ./code/config-iscx2012_NF.json
+python -u ./code/main.py -c ./code/config-iscx2012_SC.json

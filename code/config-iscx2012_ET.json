@@ -1,5 +1,6 @@
 {
-  "dataset": "datasets/iscx2012_ET/",
+  "dataset_path": "data/iscx2012_ET/",
+  "dataset_name": "iscx2012_ET",
   "filters": [
     {
       "type": "all_days"

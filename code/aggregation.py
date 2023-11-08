@@ -1,6 +1,8 @@
 import json
 import uuid
 
+import numpy as np
+
 from tasks import time_diff
 
 
@@ -11,7 +13,7 @@ class SetEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class E():
+class E:
     def __init__(
             self, timestamp=None, datetime=None, sig_generator=None, sid=None, sig_rev=None, rule_name=None, proto=None,
             from_addr=None, from_port=None, to_addr=None, to_port=None,
@@ -50,14 +52,12 @@ class E():
         self.default = default
 
     def __str__(self) -> str:
-        # return f'{str(self.datetime)}, {str(self.from_addr)}, {str(self.to_addr)}, {str(self.from_port)},\
-        #  {str(self.to_port)}, {str(self.rule_name)}, {str(self.sid)}'
-        return str(self.__dict__)
+        return str(self.datetime) + ", " + str(self.from_addr) + ", " + str(self.to_addr) + ", " + str(
+            self.from_port) + ", " + str(self.to_port) + ", " + str(self.rule_name) + ", " + str(self.sid)
 
-    def __repr__(self) -> dict:
-        # return f'{str(self.datetime)}, {str(self.from_addr)}, {str(self.to_addr)}, {str(self.from_port)},\
-        #  {str(self.to_port)}, {str(self.rule_name)}, {str(self.sid)}'
-        return self.__dict__
+    def __repr__(self) -> str:
+        return str(self.datetime) + ", " + str(self.from_addr) + ", " + str(self.to_addr) + ", " + str(
+            self.from_port) + ", " + str(self.to_port) + ", " + str(self.rule_name) + ", " + str(self.sid)
 
     def serialize(self) -> dict:
         dict = self.__dict__.copy()
@@ -70,51 +70,37 @@ class E():
     # aggregated meta-alert
 
 
-class A():
-    def __init__(
-            self, sid=set(), rule_name=set(), from_addr=set(), to_addr=set(), from_port=set(), to_port=set(),
-            from_addr_count=0, to_addr_count=0, from_port_count=0, to_port_count=0,
-            start_time=None, end_time=None, mean=None, median=None, std=None, min=None, max=None, proto=set(),
-            tcpflags=set(), tos=set(), events=[], uuid=uuid.uuid4()
-    ):
-        self.sid = sid
-        self.rule_name = rule_name
-        self.from_addr = from_addr
-        self.to_addr = to_addr
-        self.from_port = from_port
-        self.to_port = to_port
-        self.from_addr_count = from_addr_count
-        self.to_addr_count = to_addr_count
-        self.from_port_count = from_port_count
-        self.to_port_count = to_port_count
-        self.start_time = start_time
-        self.end_time = end_time
-        self.mean = mean
-        self.median = median
-        self.std = std
-        self.min = min
-        self.max = max
-        self.proto = proto
-        self.tcpflags = tcpflags
-        self.tos = tos
-        self.events = events
-        self.uuid = uuid
+class A:
+    def __init__(self):
+        self.sid = set()
+        self.rule_name = set()
+        self.from_addr = set()
+        self.to_addr = set()
+        self.from_port = set()
+        self.to_port = set()
+        self.from_addr_count = 0
+        self.to_addr_count = 0
+        self.from_port_count = 0
+        self.to_port_count = 0
+        self.start_time = None
+        self.end_time = None
+        self.mean = None
+        self.median = None
+        self.std = None
+        self.min = None
+        self.max = None
+        self.events = []
+        self.uuid = uuid.uuid4()
 
     def __str__(self):
-        # return str(self.sid) + ", " + str(self.from_addr) + ", " + str(self.to_addr) + ", " + str(
-        #     self.from_port) + ", " + str(
-        #     self.to_port) + ", " + str(self.rule_name) + ", " + str(self.start_time) + ", " + str(
-        #     self.end_time) + ", " + str(
-        #     len(self.events))
-        return str(self.__dict__)
+        return str(self.sid) + ", " + str(self.from_addr) + ", " + str(self.to_addr) + ", " + str(
+            self.from_port) + ", " + str(self.to_port) + ", " + str(self.rule_name) + ", " + str(
+            self.start_time) + ", " + str(self.end_time) + ", " + str(len(self.events))
 
-    def __repr__(self) -> dict:
-        # return str(self.sid) + ", " + str(self.from_addr) + ", " + str(self.to_addr) + ", " + str(
-        #     self.from_port) + ", " + str(
-        #     self.to_port) + ", " + str(self.rule_name) + ", " + str(self.start_time) + ", " + str(
-        #     self.end_time) + ", " + str(
-        #     len(self.events))
-        return self.__dict__
+    def __repr__(self) -> str:
+        return str(self.sid) + ", " + str(self.from_addr) + ", " + str(self.to_addr) + ", " + str(
+            self.from_port) + ", " + str(self.to_port) + ", " + str(self.rule_name) + ", " + str(
+            self.start_time) + ", " + str(self.end_time) + ", " + str(len(self.events))
 
     def __eq__(self, other):
         if self.sid == other.sid and self.from_addr == other.from_addr and self.to_addr == other.to_addr and \
@@ -123,6 +109,20 @@ class A():
             return True
         else:
             return False
+
+    def compute_stats(self):
+        times = []
+        for event in self.events:
+            times.append(event.datetime)
+        times = np.array(times)
+        delta_times = np.diff(times)
+        delta_times = [x.total_seconds() for x in delta_times]
+        if len(delta_times) > 1:
+            self.mean = np.mean(delta_times)
+            self.median = np.median(delta_times)
+            self.std = np.std(delta_times)
+            self.min = np.min(delta_times)
+            self.max = np.max(delta_times)
 
     def serialize(self) -> dict:
         dict = self.__dict__.copy()
@@ -136,9 +136,6 @@ class A():
         dict['to_addr'] = list(self.to_addr)
         dict['from_port'] = list(self.from_port)
         dict['to_port'] = list(self.to_port)
-        dict['proto'] = list(self.proto)
-        dict['tcpflags'] = list(str(x) for x in self.tcpflags)
-        dict['tos'] = list(self.tos)
         return dict
 
 
@@ -189,18 +186,15 @@ def aggregtion(all_filtered_events, delta):
             if (event.datetime >= agg_event.end_time and time_diff(event.datetime, agg_event.end_time) <= delta) or (
                     event.datetime >= agg_event.start_time and event.datetime <= agg_event.end_time):
                 if ((event.from_addr in agg_event.from_addr and len(agg_event.from_addr) == 1) or (
-                        event.to_addr in agg_event.to_addr and len(
-                    agg_event.to_addr) == 1)) and event.sid in agg_event.sid:
+                        event.to_addr in agg_event.to_addr and
+                        len(agg_event.to_addr) == 1)) and event.sid in agg_event.sid:
                     added = True
                     agg_event.from_addr.add(event.from_addr)
                     agg_event.rule_name.add(event.rule_name)
-                    agg_event.to_addr.add(event.from_addr)
+                    agg_event.to_addr.add(event.to_addr)
                     agg_event.sid.add(event.sid)
                     agg_event.from_port.add(event.from_port)
                     agg_event.to_port.add(event.to_port)
-                    agg_event.proto.add(event.proto)
-                    agg_event.tcpflags.add(event.tcpflags)
-                    agg_event.tos.add(event.tos)
                     agg_event.end_time = event.datetime
                     agg_event.events.append(event)
                     break
@@ -215,9 +209,6 @@ def aggregtion(all_filtered_events, delta):
             a.sid.add(event.sid)
             a.from_port.add(event.from_port)
             a.to_port.add(event.to_port)
-            a.proto.add(event.proto)
-            a.tcpflags.add(event.tcpflags)
-            a.tos.add(event.tos)
             a.end_time = event.datetime
             a.start_time = event.datetime
             a.events.append(event)
@@ -236,5 +227,6 @@ def aggregtion(all_filtered_events, delta):
     agg_events = sorted(agg_events, key=lambda agg_event: (agg_event.start_time, agg_event.end_time))
     for agv in agg_events:
         agv.events.sort(key=lambda u: u.datetime)
+        agv.compute_stats()
 
     return agg_events

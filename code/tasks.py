@@ -38,17 +38,12 @@ def load_dataset_iscx(dataset_path, inputs, inputs_benign, headers):
     for file_path in inputs + inputs_benign:
         data = pd.read_csv(dataset_path + file_path, header=None, names=headers,
                            converters={'from_port': str, 'to_port': str})
-        # sorted_data = data.sort_values(by=['timestamp'])
+
         data['datetime'] = pd.to_datetime(data['timestamp'], format='%m/%d-%H:%M:%S.%f',
                                           exact=False) - pd.Timedelta('05:00:00')
-        # data['day'] = data["datetime"].apply(lambda t: str(t.date()))
+
         data['file_path'] = file_path
         data['hour'] = data["datetime"].apply(lambda t: str(t.hour))
-        # if file_path in inputs_benign:
-        #     data['benign'] = 1
-        #     benign_days.append(data['day'][0])
-        # else:
-        #     data['benign'] = 0
         all_data = all_data._append(data)
 
     all_data = all_data.sort_values(by=['datetime'])
@@ -56,6 +51,8 @@ def load_dataset_iscx(dataset_path, inputs, inputs_benign, headers):
 
 
 def check_filters(filters1, filters2):
+    if filters1 is None and filters2 is None:
+        return True
     for filter in filters1:
         if filter['type'] not in filters2:
             err_msg = f'ERROR: Filter {filter} is not applicable for this dataset'
@@ -71,10 +68,6 @@ def get_days(data):
 
 def get_file_paths(data):
     return list(data["file_path"].map(lambda t: t).unique())
-
-
-def get_quantity(data, columns):
-    return data[columns].value_counts()
 
 
 def get_stats(data, col):
@@ -122,9 +115,15 @@ def get_counts_hours_sub_mean(data, group_cols, inputs):
     return grouped_data
 
 
-def export_agg_data(agg_events):
+def export_filtered_data(data, name):
+    base_path = 'results'
+    data.to_csv(f'{base_path}/{name}.csv')
+
+
+def export_agg_data(agg_events, name):
+    base_path = 'results'
     serialized_events = []
     for agg_event in agg_events:
         serialized_events.append(agg_event.serialize())
-    with open("results.json", "w") as write_file:
-        json.dump(serialized_events[0], write_file)
+    with open(f"{base_path}/{name}.json", "w") as write_file:
+        json.dump(serialized_events, write_file)

@@ -1,0 +1,38 @@
+{
+  "filters": null,
+  "inputs": [
+    "inputs/ET_LLS_DDOS_2.0.2-inside_allerts.csv",
+    "inputs/ET_LLS_DDOS_2.0.2-outside_allerts.csv"
+  ],
+  "classes": "classes/ET_DARPA_CLASS.csv",
+  "headers": [
+    "timestamp",
+    "sig_generator",
+    "sid",
+    "sig_rev",
+    "rule_name",
+    "proto",
+    "from_addr",
+    "from_port",
+    "to_addr",
+    "to_port",
+    "ethsrc",
+    "ethdst",
+    "ethlen",
+    "tcpflags",
+    "tcpseq",
+    "tcpack",
+    "tcpln",
+    "tcpwindow",
+    "ttl",
+    "tos",
+    "id",
+    "dgmlen",
+    "iplen",
+    "icmptype",
+    "icmpcode",
+    "icmpid",
+    "icmpseq",
+    "default"
+  ]
+}

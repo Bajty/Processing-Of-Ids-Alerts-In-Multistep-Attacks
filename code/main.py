@@ -1,23 +1,17 @@
-import pandas as pd
-import numpy as np
-from tasks import perc_diff
-import uuid
+# IMPORTS
 import argparse
-import os
-from datetime import datetime
 
 from tasks import (
     load_config,
     load_dataset_iscx,
-    get_quantity,
-    get_days,
     get_file_paths,
     get_stats,
     get_counts_days,
     get_counts_hours,
     get_counts_hours_sub_mean,
     check_filters,
-    export_agg_data
+    export_agg_data,
+    export_filtered_data
 )
 from filter import (
     filter_all_days_stats,
@@ -28,26 +22,40 @@ from aggregation import (
     aggregtion
 )
 
-# add flag option for donfig json file
+# ARGPARSER for configuration file
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--config", required=True, help="Path to config file", dest="config")
 args = parser.parse_args()
 config = args.config
 
+# LOAD defined configuration
 config = load_config(config)
+print(f"LOADING === config dataset {config['dataset_name']}")
 
-dataset_path = config['dataset']
+# LOAD specs file for dataset
+print(f"DEFINING headers, allowed filters, input files, input benign files for {config['dataset_name']}")
+dataset_path = config['dataset_path']
 dataset_config = load_config(f'{dataset_path}config.json')
 
-data = load_dataset_iscx(dataset_path=dataset_path, inputs=dataset_config['inputs'],
-                         inputs_benign=dataset_config['inputs_benign'], headers=dataset_config['headers'])
-quantity = get_quantity(data=data, columns=["rule_name", "sid"])
+# LOAD dataset
+data = load_dataset_iscx(
+    dataset_path=dataset_path, inputs=dataset_config['inputs'],
+    inputs_benign=dataset_config['inputs_benign'] if 'inputs_benign' in dataset_config else [],
+    headers=dataset_config['headers']
+)
 
+# DEFINE unique paths, file_path represents in dataset value for each row from which file is specific row loaded
+# basically this is the same as inputs benign and inputs from defined dataset
 paths = get_file_paths(data=data)
+
+# CHECK if all filters are correctly defined for this run
 if check_filters(config['filters'], dataset_config['filters']):
+
     all_data_filtered = data.copy()
-    print(len(all_data_filtered))
-    for filter in config['filters']:
+    print(f"Number of loaded events: {len(all_data_filtered)}")
+
+    # APPLY all defined filter from config file
+    for index, filter in enumerate(config['filters'] if config['filters'] is not None else []):
         if filter['type'] == 'all_days':
             group_cols = dataset_config['filters'][filter['type']]['group_cols']
             stats = get_counts_days(data=data, group_cols=group_cols)
@@ -81,16 +89,21 @@ if check_filters(config['filters'], dataset_config['filters']):
             filter_list = set(list(filtered_stats[group_cols[:-1]].itertuples(index=False, name=None)))
             all_data_filtered = all_data_filtered[~all_data_filtered.set_index(group_cols[:-1]).index.isin(filter_list)]
 
-        print(len(all_data_filtered))
-
-    # print(all_data_filtered.loc[(all_data_filtered['file_path'] == 'inputs/ET_alert_testbed-13jun.csv')])
-
-    pocetnost_end = all_data_filtered[["rule_name", "sid"]].value_counts()
-    # print(pocetnost_end)
+        print(f"Number of events after {index} filter : {len(all_data_filtered)}")
 
     # sort filtered data according
     all_data_filtered = all_data_filtered.sort_values(by=['timestamp'])
+
+    # EXPORT filtered events into json
+    if config['filters'] is not None:
+        export_filtered_data(all_data_filtered, name=config['dataset_name'])
+
+    # CREATE classes for aggregation
     all_filtered_events__class = create_events(filtered_data=all_data_filtered)
+
+    # RUN aggregation over moving window
     agg_events = aggregtion(all_filtered_events=all_filtered_events__class, delta=1800)
-    print(len(agg_events))
-    export_agg_data(agg_events=agg_events)
+    print(f"Number of aggregated events: {len(agg_events)}")
+
+    # EXPORT aggregated events into json
+    export_agg_data(agg_events=agg_events, name=config['dataset_name'])
