@@ -3,11 +3,15 @@
   "dataset_name": "iscx2012_ET",
   "filters": [
     {
-      "type": "all_days"
+      "type": "all_days",
+      "perc_diff": 0.2,
+      "count": 6
     },
     {
       "type": "count_hours",
       "sub_mean": false,
+      "perc_diff": 0.5,
+      "count": 10,
       "group_cols": [
         "file_path",
         "sid",
@@ -19,6 +23,8 @@
       "type": "count_hours",
       "sub_mean": true,
       "mean_from": "benign_days",
+      "perc_diff": 0.5,
+      "count": 10,
       "group_cols": [
         "file_path",
         "sid",
@@ -30,6 +36,8 @@
       "type": "count_hours",
       "sub_mean": true,
       "mean_from": "all_days",
+      "perc_diff": 0.5,
+      "count": 10,
       "group_cols": [
         "file_path",
         "sid",
@@ -40,6 +48,8 @@
     {
       "type": "count_hours",
       "sub_mean": false,
+      "perc_diff": 0.5,
+      "count": 10,
       "group_cols": [
         "file_path",
         "sid",
@@ -51,6 +61,8 @@
       "type": "count_hours",
       "sub_mean": true,
       "mean_from": "all_days",
+      "perc_diff": 0.5,
+      "count": 10,
       "group_cols": [
         "file_path",
         "sid",
@@ -62,6 +74,8 @@
       "type": "count_hours",
       "sub_mean": true,
       "mean_from": "benign_days",
+      "perc_diff": 0.5,
+      "count": 10,
       "group_cols": [
         "file_path",
         "sid",

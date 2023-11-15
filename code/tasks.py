@@ -32,15 +32,23 @@ def load_config(dataset_config) -> dir:
     return config
 
 
-def load_dataset_iscx(dataset_path, inputs, inputs_benign, headers):
+def load_dataset_iscx(dataset_path, inputs, inputs_benign, headers, timedelta, timedelta_function):
     all_data = pd.DataFrame()
     benign_days = []
     for file_path in inputs + inputs_benign:
         data = pd.read_csv(dataset_path + file_path, header=None, names=headers,
                            converters={'from_port': str, 'to_port': str})
 
-        data['datetime'] = pd.to_datetime(data['timestamp'], format='%m/%d-%H:%M:%S.%f',
-                                          exact=False) - pd.Timedelta('05:00:00')
+        if timedelta != False:
+            if timedelta_function == "+":
+                data['datetime'] = pd.to_datetime(data['timestamp'], format='%m/%d-%H:%M:%S.%f',
+                                                  exact=False) + pd.Timedelta(timedelta)
+            if timedelta_function == "-":
+                data['datetime'] = pd.to_datetime(data['timestamp'], format='%m/%d-%H:%M:%S.%f',
+                                                  exact=False) - pd.Timedelta(timedelta)
+        else:
+            data['datetime'] = pd.to_datetime(data['timestamp'], format='%m/%d-%H:%M:%S.%f',
+                                              exact=False)
 
         data['file_path'] = file_path
         data['hour'] = data["datetime"].apply(lambda t: str(t.hour))
@@ -57,6 +65,7 @@ def check_filters(filters1, filters2):
         if filter['type'] not in filters2:
             err_msg = f'ERROR: Filter {filter} is not applicable for this dataset'
             raise Exception(err_msg)
+
     return True
 
     return all(x in config for x in dataset_config)
@@ -116,12 +125,16 @@ def get_counts_hours_sub_mean(data, group_cols, inputs):
 
 
 def export_filtered_data(data, name):
-    base_path = 'results'
+    base_path = 'results/02'
     data.to_csv(f'{base_path}/{name}.csv')
 
 
+def load_classes(dataset_path, path):
+    return pd.read_csv(f'{dataset_path}/{path}')
+
+
 def export_agg_data(agg_events, name):
-    base_path = 'results'
+    base_path = 'results/02'
     serialized_events = []
     for agg_event in agg_events:
         serialized_events.append(agg_event.serialize())

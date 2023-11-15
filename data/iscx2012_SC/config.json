@@ -1,8 +1,9 @@
 {
   "filters": {
     "all_days": {
-      "perc_diff": 0.2,
-      "count": 6,
+      "perc_diff_min": 0.0,
+      "perc_diff_max": 2.0,
+      "count_min": 0,
       "group_cols": [
         "sid",
         "rule_name",
@@ -10,9 +11,10 @@
       ]
     },
     "count_hours": {
-      "perc_diff": 0.5,
-      "count": 10,
-      "max": 0,
+      "perc_diff_min": 0.0,
+      "perc_diff_max": 2.0,
+      "count_min": 0,
+      "count_max": 24,
       "group_cols_options": [
         [
           "file_path",
@@ -37,6 +39,8 @@
       ]
     }
   },
+  "timedelta": "05:00:00",
+  "timedelta_function": "-",
   "inputs": [
     "inputs/SC_alert_testbed-13jun.csv",
     "inputs/SC_alert_testbed-14jun.csv",

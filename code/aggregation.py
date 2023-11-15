@@ -72,8 +72,9 @@ class E:
 
 class A:
     def __init__(self):
-        self.sid = set()
-        self.rule_name = set()
+        self.sid = None
+        self.class_name = None
+        self.rule_name = None
         self.from_addr = set()
         self.to_addr = set()
         self.from_port = set()
@@ -127,11 +128,10 @@ class A:
     def serialize(self) -> dict:
         dict = self.__dict__.copy()
         dict['uuid'] = str(dict['uuid'])
+        dict['class_name'] = str(dict['class_name'])
         dict['start_time'] = dict['start_time'].strftime('%Y-%m-%d %X')
         dict['end_time'] = dict['end_time'].strftime('%Y-%m-%d %X')
         dict['events'] = [event.serialize() for event in self.events]
-        dict['sid'] = list(self.sid)
-        dict['rule_name'] = list(self.rule_name)
         dict['from_addr'] = list(self.from_addr)
         dict['to_addr'] = list(self.to_addr)
         dict['from_port'] = list(self.from_port)
@@ -177,7 +177,7 @@ def create_events(filtered_data) -> [E]:
     return all_filtered_events
 
 
-def aggregtion(all_filtered_events, delta):
+def aggregtion(all_filtered_events, delta, classes):
     agg_events = []
     actual = []
     for event in all_filtered_events:
@@ -187,12 +187,10 @@ def aggregtion(all_filtered_events, delta):
                     event.datetime >= agg_event.start_time and event.datetime <= agg_event.end_time):
                 if ((event.from_addr in agg_event.from_addr and len(agg_event.from_addr) == 1) or (
                         event.to_addr in agg_event.to_addr and
-                        len(agg_event.to_addr) == 1)) and event.sid in agg_event.sid:
+                        len(agg_event.to_addr) == 1)) and event.sid == agg_event.sid:
                     added = True
                     agg_event.from_addr.add(event.from_addr)
-                    agg_event.rule_name.add(event.rule_name)
                     agg_event.to_addr.add(event.to_addr)
-                    agg_event.sid.add(event.sid)
                     agg_event.from_port.add(event.from_port)
                     agg_event.to_port.add(event.to_port)
                     agg_event.end_time = event.datetime
@@ -204,9 +202,10 @@ def aggregtion(all_filtered_events, delta):
         if not added:
             a = A()
             a.from_addr.add(event.from_addr)
-            a.rule_name.add(event.rule_name)
+            a.class_name = classes.loc[classes['sid'] == event.sid]['stage'].values[0]
+            a.rule_name = event.rule_name
             a.to_addr.add(event.to_addr)
-            a.sid.add(event.sid)
+            a.sid = event.sid
             a.from_port.add(event.from_port)
             a.to_port.add(event.to_port)
             a.end_time = event.datetime
