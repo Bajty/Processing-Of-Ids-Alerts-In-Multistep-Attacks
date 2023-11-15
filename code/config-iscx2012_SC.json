@@ -2,6 +2,8 @@
   "dataset_path": "data/iscx2012_SC/",
   "dataset_name": "iscx2012_SC",
   "agg_delta": 1800,
+  "timedelta": "05:00:00",
+  "timedelta_function": "-",
   "filters": [
     {
       "type": "all_days",
@@ -13,12 +15,7 @@
       "sub_mean": false,
       "perc_diff": 0.5,
       "count": 10,
-      "group_cols": [
-        "file_path",
-        "sid",
-        "from_addr",
-        "hour"
-      ]
+      "addr": "from_addr"
     },
     {
       "type": "count_hours",
@@ -26,12 +23,7 @@
       "mean_from": "benign_days",
       "perc_diff": 0.5,
       "count": 10,
-      "group_cols": [
-        "file_path",
-        "sid",
-        "from_addr",
-        "hour"
-      ]
+      "addr": "from_addr"
     },
     {
       "type": "count_hours",
@@ -39,24 +31,14 @@
       "mean_from": "all_days",
       "perc_diff": 0.5,
       "count": 10,
-      "group_cols": [
-        "file_path",
-        "sid",
-        "from_addr",
-        "hour"
-      ]
+      "addr": "from_addr"
     },
     {
       "type": "count_hours",
       "sub_mean": false,
       "perc_diff": 0.5,
       "count": 10,
-      "group_cols": [
-        "file_path",
-        "sid",
-        "to_addr",
-        "hour"
-      ]
+      "addr": "to_addr"
     },
     {
       "type": "count_hours",
@@ -64,12 +46,7 @@
       "mean_from": "all_days",
       "perc_diff": 0.5,
       "count": 10,
-      "group_cols": [
-        "file_path",
-        "sid",
-        "to_addr",
-        "hour"
-      ]
+      "addr": "to_addr"
     },
     {
       "type": "count_hours",
@@ -77,12 +54,7 @@
       "mean_from": "benign_days",
       "perc_diff": 0.5,
       "count": 10,
-      "group_cols": [
-        "file_path",
-        "sid",
-        "to_addr",
-        "hour"
-      ]
+      "addr": "to_addr"
     }
   ]
 }
