@@ -1,17 +1,6 @@
 import pandas as pd
 import json
-import re
 import numpy as np
-from datetime import datetime
-
-from parso.python.tokenize import group
-
-RULES = 'ET'  # SC, ET, NF
-OUTPUT_STATS = 'new_outputs/pocetnost_' + RULES + '_ALL.txt'
-OUTPUT_STATS_DAYS = 'new_outputs/pocetnost_' + RULES + '_ALL_days.csv'
-OUTPUT_STATS_AFTER = 'new_outputs/pocetnost_' + RULES + '_ALL_after.txt'
-INPUT_FILES = []
-SORTED_IN = []
 
 
 def perc_diff(a, b):
@@ -32,7 +21,7 @@ def load_config(dataset_config) -> dir:
     return config
 
 
-def load_dataset_iscx(dataset_path, inputs, inputs_benign, headers, timedelta, timedelta_function):
+def load_dataset(dataset_path, inputs, inputs_benign, headers, timedelta, timedelta_function):
     all_data = pd.DataFrame()
     benign_days = []
     for file_path in inputs + inputs_benign:
@@ -125,8 +114,12 @@ def get_counts_hours_sub_mean(data, group_cols, inputs):
 
 
 def export_filtered_data(data, name):
-    base_path = 'results/02'
-    data.to_csv(f'{base_path}/{name}.csv')
+    data_copy = data.copy()
+    data_copy = data_copy.drop('hour', axis=1)
+    data_copy = data_copy.drop('datetime', axis=1)
+    data_copy = data_copy.drop('file_path', axis=1)
+    base_path = 'results'
+    data_copy.to_csv(f'{base_path}/{name}.csv', index=False, header=False)
 
 
 def load_classes(dataset_path, path):
@@ -134,7 +127,7 @@ def load_classes(dataset_path, path):
 
 
 def export_agg_data(agg_events, name):
-    base_path = 'results/02'
+    base_path = 'results'
     serialized_events = []
     for agg_event in agg_events:
         serialized_events.append(agg_event.serialize())

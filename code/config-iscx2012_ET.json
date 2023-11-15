@@ -1,6 +1,7 @@
 {
   "dataset_path": "data/iscx2012_ET/",
   "dataset_name": "iscx2012_ET",
+  "agg_delta": 1800,
   "filters": [
     {
       "type": "all_days",
@@ -83,6 +84,5 @@
         "hour"
       ]
     }
-  ],
-  "agg": true
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "dataset_path": "data/DARPA_ET_2/",
   "dataset_name": "DARPA_ET_2",
-  "classes": "classes/ET_DARPA_CLASS.csv",
-  "filters": null
+  "filters": null,
+  "agg_delta": 1800
 }

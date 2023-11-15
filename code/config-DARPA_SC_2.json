@@ -1,6 +1,6 @@
 {
   "dataset_path": "data/DARPA_SC_2/",
   "dataset_name": "DARPA_SC_2",
-  "classes": "classes/SC_DARPA_CLASS.csv",
-  "filters": null
+  "filters": null,
+  "agg_delta": 1800
 }

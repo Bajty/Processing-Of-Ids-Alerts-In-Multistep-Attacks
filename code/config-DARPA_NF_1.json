@@ -1,6 +1,6 @@
 {
   "dataset_path": "data/DARPA_NF_1/",
   "dataset_name": "DARPA_NF_1",
-  "classes": "classes/NF_DARPA_CLASS.csv",
-  "filters": null
+  "filters": null,
+  "agg_delta": 1800
 }

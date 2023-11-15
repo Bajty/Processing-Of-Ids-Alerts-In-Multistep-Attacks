@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 from tasks import (
     load_config,
-    load_dataset_iscx,
+    load_dataset,
     get_file_paths,
     get_stats,
     get_counts_days,
@@ -39,7 +39,7 @@ dataset_path = config['dataset_path']
 dataset_config = load_config(f'{dataset_path}config.json')
 
 # LOAD dataset
-data = load_dataset_iscx(
+data = load_dataset(
     dataset_path=dataset_path, inputs=dataset_config['inputs'],
     inputs_benign=dataset_config['inputs_benign'] if 'inputs_benign' in dataset_config else [],
     headers=dataset_config['headers'],
@@ -119,7 +119,7 @@ if check_filters(config['filters'], dataset_config['filters']):
 
     # RUN aggregation over moving window
     classes = load_classes(dataset_path=dataset_path, path=dataset_config['classes'])
-    agg_events = aggregtion(all_filtered_events=all_filtered_events__class, delta=1800, classes=classes)
+    agg_events = aggregtion(all_filtered_events=all_filtered_events__class, delta=config['agg_delta'], classes=classes)
     print(f"Number of aggregated events: {len(agg_events)}")
 
     # EXPORT aggregated events into json
