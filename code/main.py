@@ -90,7 +90,7 @@ if check_filters(config['filters'], dataset_config['filters']):
                     if filter['mean_from'] == 'benign_days':
                         inputs = dataset_config['inputs_benign']
                     else:
-                        inputs = dataset_config['inputs']
+                        inputs = dataset_config['inputs'] + dataset_config['inputs_benign']
 
                     stats = get_counts_hours_sub_mean(data, group_cols=group_cols, inputs=inputs)
                 else:
