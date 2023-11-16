@@ -1,6 +1,10 @@
 import pandas as pd
 import json
 import numpy as np
+from constants import (
+    HEADER,
+    TIME_DELTA_FUNCTION_OPTIONS
+)
 
 
 def perc_diff(a, b):
@@ -21,14 +25,13 @@ def load_config(dataset_config) -> dir:
     return config
 
 
-def load_dataset(dataset_path, inputs, inputs_benign, headers, timedelta, timedelta_function):
+def load_dataset(dataset_path, inputs, inputs_benign, timedelta, timedelta_function):
     all_data = pd.DataFrame()
-    benign_days = []
     for file_path in inputs + inputs_benign:
-        data = pd.read_csv(dataset_path + file_path, header=None, names=headers,
+        data = pd.read_csv(dataset_path + file_path, header=None, names=HEADER,
                            converters={'from_port': str, 'to_port': str})
 
-        if timedelta != False:
+        if timedelta != False and timedelta_function in TIME_DELTA_FUNCTION_OPTIONS:
             if timedelta_function == "+":
                 data['datetime'] = pd.to_datetime(data['timestamp'], format='%m/%d-%H:%M:%S.%f',
                                                   exact=False) + pd.Timedelta(timedelta)
@@ -47,17 +50,8 @@ def load_dataset(dataset_path, inputs, inputs_benign, headers, timedelta, timede
     return all_data
 
 
-def check_filters(filters1, filters2):
-    if filters1 is None and filters2 is None:
-        return True
-    for filter in filters1:
-        if filter['type'] not in filters2:
-            err_msg = f'ERROR: Filter {filter} is not applicable for this dataset'
-            raise Exception(err_msg)
-
-    return True
-
-    return all(x in config for x in dataset_config)
+def load_classes(dataset_path, path):
+    return pd.read_csv(f'{dataset_path}/{path}')
 
 
 def get_days(data):
@@ -85,8 +79,7 @@ def get_counts_days(data, group_cols):
     return all_days_data
 
 
-def get_counts_hours(data, group_cols):
-    paths = get_file_paths(data)
+def get_counts_hours(data, group_cols, paths):
     data = data[group_cols]
     return_data = pd.DataFrame()
     for path in paths:
@@ -97,12 +90,11 @@ def get_counts_hours(data, group_cols):
     return return_data
 
 
-def get_counts_hours_sub_mean(data, group_cols, inputs):
+def get_counts_hours_sub_mean(data, group_cols, inputs, paths):
     group_cols = group_cols
-    grouped_data = get_counts_hours(data, group_cols).loc[:, '0':'23']
+    grouped_data = get_counts_hours(data, group_cols, paths).loc[:, '0':'23']
     selected_grouped_data = grouped_data[grouped_data.index.get_level_values('file_path').isin(inputs)]
     selected_grouped_data = selected_grouped_data.groupby(group_cols[1:-1]).mean()
-    paths = get_file_paths(data)
     for index in selected_grouped_data.index.tolist():
         for path in paths:
             temp_idx = (path,) + index
@@ -120,10 +112,6 @@ def export_filtered_data(data, name):
     data_copy = data_copy.drop('file_path', axis=1)
     base_path = 'results'
     data_copy.to_csv(f'{base_path}/{name}.csv', index=False, header=False)
-
-
-def load_classes(dataset_path, path):
-    return pd.read_csv(f'{dataset_path}/{path}')
 
 
 def export_agg_data(agg_events, name):

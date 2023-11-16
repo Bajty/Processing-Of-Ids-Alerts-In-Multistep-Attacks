@@ -1,11 +1,4 @@
-{
-  "filters": null,
-  "inputs": [
-    "inputs/ET_LLS_DDOS_1.0-dmz_allerts.csv",
-    "inputs/ET_LLS_DDOS_1.0-inside_allerts.csv"
-  ],
-  "classes": "classes/ET_DARPA_CLASS.csv",
-  "headers": [
+HEADER = [
     "timestamp",
     "sig_generator",
     "sid",
@@ -34,5 +27,17 @@
     "icmpid",
     "icmpseq",
     "default"
-  ]
-}
+]
+
+INPUTS_PATH = 'inputs'
+BENIGN_INPUTS = 'benign'
+CLASSES = 'classes'
+PERC_DIFF_MIN = 0.0
+PERC_DIFF_MAX = 2.0
+COUNT_MIN = 0
+COUNT_MAX_HOURS = 24
+
+SUB_MEAN_OPTIONS = [True, False]
+FROM_MEAN_OPTIONS = ['all_days', 'benign_days']
+ADDR_OPTIONS = ['from_addr', 'to_addr']
+TIME_DELTA_FUNCTION_OPTIONS = ['+', '-']
