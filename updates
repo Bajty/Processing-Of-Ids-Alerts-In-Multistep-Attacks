@@ -1,0 +1,66 @@
++ python -u ./code/main.py -c ./code/config-DARPA_ET_1.json
+LOADING === config dataset DARPA_ET_1
+DEFINING headers, allowed filters, input files, input benign files for DARPA_ET_1
+Number of loaded events: 2204
+Number of aggregated events: 28
++ python -u ./code/main.py -c ./code/config-DARPA_ET_2.json
+LOADING === config dataset DARPA_ET_2
+DEFINING headers, allowed filters, input files, input benign files for DARPA_ET_2
+Number of loaded events: 2619
+Number of aggregated events: 17
++ python -u ./code/main.py -c ./code/config-DARPA_NF_1.json
+LOADING === config dataset DARPA_NF_1
+DEFINING headers, allowed filters, input files, input benign files for DARPA_NF_1
+Number of loaded events: 30758
+Number of aggregated events: 139
++ python -u ./code/main.py -c ./code/config-DARPA_NF_2.json
+LOADING === config dataset DARPA_NF_2
+DEFINING headers, allowed filters, input files, input benign files for DARPA_NF_2
+Number of loaded events: 15284
+Number of aggregated events: 80
++ python -u ./code/main.py -c ./code/config-DARPA_SC_1.json
+LOADING === config dataset DARPA_SC_1
+DEFINING headers, allowed filters, input files, input benign files for DARPA_SC_1
+Number of loaded events: 4963
+Number of aggregated events: 95
++ python -u ./code/main.py -c ./code/config-DARPA_SC_2.json
+LOADING === config dataset DARPA_SC_2
+DEFINING headers, allowed filters, input files, input benign files for DARPA_SC_2
+Number of loaded events: 2401
+Number of aggregated events: 61
++ python -u ./code/main.py -c ./code/config-iscx2012_ET.json
+LOADING === config dataset iscx2012_ET
+DEFINING headers, allowed filters, input files, input benign files for iscx2012_ET
+Number of loaded events: 43156
+Number of events after 0 filter : 5549
+Number of events after 1 filter : 4898
+Number of events after 2 filter : 3926
+Number of events after 3 filter : 2636
+Number of events after 4 filter : 2351
+Number of events after 5 filter : 1649
+Number of events after 6 filter : 1571
+Number of aggregated events: 278
++ python -u ./code/main.py -c ./code/config-iscx2012_NF.json
+LOADING === config dataset iscx2012_NF
+DEFINING headers, allowed filters, input files, input benign files for iscx2012_NF
+Number of loaded events: 815534
+Number of events after 0 filter : 175260
+Number of events after 1 filter : 116040
+Number of events after 2 filter : 101512
+Number of events after 3 filter : 61723
+Number of events after 4 filter : 54100
+Number of events after 5 filter : 49335
+Number of events after 6 filter : 49099
+Number of aggregated events: 1113
++ python -u ./code/main.py -c ./code/config-iscx2012_SC.json
+LOADING === config dataset iscx2012_SC
+DEFINING headers, allowed filters, input files, input benign files for iscx2012_SC
+Number of loaded events: 308642
+Number of events after 0 filter : 28504
+Number of events after 1 filter : 21080
+Number of events after 2 filter : 20436
+Number of events after 3 filter : 9792
+Number of events after 4 filter : 9495
+Number of events after 5 filter : 5980
+Number of events after 6 filter : 5966
+Number of aggregated events: 224
