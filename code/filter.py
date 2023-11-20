@@ -23,6 +23,8 @@ def filter_perc_count(data, conf):
 
 
 def filter_all_days(data, all_data_filtered, filter, paths):
+    if len(paths) < 2 or len(data['datetime'].map(lambda t: t.date()).unique()) < 2:
+        raise Exception('In order to use filter `all_days` you need to have data from at least two days. ')
     if PERC_DIFF_MIN < filter['perc_diff'] < PERC_DIFF_MAX and \
             COUNT_MIN < filter['count'] <= len(paths) and \
             type(filter['count']) == int and type(filter['perc_diff']) == float:
@@ -46,6 +48,10 @@ def filter_count_hours(data, all_data_filtered, filter, benign, inputs):
         group_cols = ["file_path", "sid"] + [filter['addr']] + ["hour"]
         if filter['sub_mean'] is True:
             if filter['mean_from'] == 'benign_days':
+                if len(benign) == 0:
+                    raise Exception(
+                        'In order to use filter `count_hours` with sub_mean benign days you need to have benign data '
+                        'from at least one day.')
                 calculate_from = benign
             elif filter['mean_from'] == 'all_days':
                 calculate_from = inputs + benign
