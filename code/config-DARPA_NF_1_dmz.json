@@ -1,0 +1,6 @@
+{
+  "dataset_path": "./data/DARPA_NF_1_dmz/",
+  "dataset_name": "DARPA_NF_1_dmz",
+  "filters": null,
+  "agg_delta": 1800
+}

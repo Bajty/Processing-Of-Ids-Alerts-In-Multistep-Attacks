@@ -1,0 +1,6 @@
+{
+  "dataset_path": "./data/DARPA_SC_2_inside/",
+  "dataset_name": "DARPA_SC_2_inside",
+  "filters": null,
+  "agg_delta": 1800
+}

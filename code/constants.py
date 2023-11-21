@@ -29,9 +29,9 @@ HEADER = [
     "default"
 ]
 
-INPUTS_PATH = 'inputs'
-BENIGN_INPUTS = 'benign'
-CLASSES = 'classes'
+INPUTS_PATH = 'inputs/'
+BENIGN_INPUTS = 'benign/'
+CLASSES = 'classes/'
 PERC_DIFF_MIN = 0.0
 PERC_DIFF_MAX = 2.0
 COUNT_MIN = 0

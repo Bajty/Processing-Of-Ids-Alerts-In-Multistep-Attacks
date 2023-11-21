@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -ex
+
+# This is the master script for the capsule. When you click "Reproducible Run", the code in this file will execute.
+python -u ./code/main.py -c ./code/config-DARPA_ET_1_dmz.json
+python -u ./code/main.py -c ./code/config-DARPA_ET_1_inside.json
+python -u ./code/main.py -c ./code/config-DARPA_ET_2_inside.json
+python -u ./code/main.py -c ./code/config-DARPA_ET_2_outside.json
+python -u ./code/main.py -c ./code/config-DARPA_NF_1_dmz.json
+python -u ./code/main.py -c ./code/config-DARPA_NF_1_inside.json
+python -u ./code/main.py -c ./code/config-DARPA_NF_2_inside.json
+python -u ./code/main.py -c ./code/config-DARPA_NF_2_outside.json
+python -u ./code/main.py -c ./code/config-DARPA_SC_1_dmz.json
+python -u ./code/main.py -c ./code/config-DARPA_SC_1_inside.json
+python -u ./code/main.py -c ./code/config-DARPA_SC_2_inside.json
+python -u ./code/main.py -c ./code/config-DARPA_SC_2_outside.json
+python -u ./code/main.py -c ./code/config-iscx2012_ET.json
+python -u ./code/main.py -c ./code/config-iscx2012_NF.json
+python -u ./code/main.py -c ./code/config-iscx2012_SC.json

@@ -1,0 +1,6 @@
+{
+  "dataset_path": "./data/DARPA_ET_1_inside/",
+  "dataset_name": "DARPA_ET_1_inside",
+  "filters": null,
+  "agg_delta": 1800
+}

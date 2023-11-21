@@ -1,6 +1,0 @@
-{
-  "dataset_path": "data/DARPA_ET_2/",
-  "dataset_name": "DARPA_ET_2",
-  "filters": null,
-  "agg_delta": 1800
-}

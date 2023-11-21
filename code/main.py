@@ -35,9 +35,9 @@ print(f"LOADING === config dataset {config['dataset_name']}")
 # LOAD specs file for dataset
 print(f"DEFINING headers, allowed filters, input files, input benign files for {config['dataset_name']}")
 dataset_path = config['dataset_path']
-DATASET_INPUT_FILES = [INPUTS_PATH + '/' + x for x in os.listdir(f'{dataset_path}/{INPUTS_PATH}/')]
-DATASET_BENIGN_FILES = [BENIGN_INPUTS + '/' + x for x in os.listdir(f'{dataset_path}/{BENIGN_INPUTS}/')]
-DATASET_CLASSES = [CLASSES + '/' + x for x in os.listdir(f'{dataset_path}/{CLASSES}/')]
+DATASET_INPUT_FILES = [INPUTS_PATH + x for x in os.listdir(f'{dataset_path}{INPUTS_PATH}')]
+DATASET_BENIGN_FILES = [BENIGN_INPUTS + x for x in os.listdir(f'{dataset_path}{BENIGN_INPUTS}')]
+DATASET_CLASSES = [CLASSES + x for x in os.listdir(f'{dataset_path}{CLASSES}')]
 
 # LOAD dataset
 data = load_dataset(
