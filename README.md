@@ -14,15 +14,15 @@ In order to use this code, dataset need to be in specific folder organization. T
 - benign (can be empty, if we do not use filters based on benign days)
 - classes
 
-**Inputs and benign** folders store .csv files. Each csv file needs to represent one day from snort IDS.
+**Inputs and benign** folders store .csv files. Each csv file represents one day from snort IDS.
 
-In **classes** folder is csv file, which defines class for each SID. There are three required
+In **classes** folder is csv file, which defines class for SID. There are three required
 columns: `sid, rule_name and stage`.
 
 ## How to run
 
 In order to run we need to define run configuration. This is later set as input argument for python script like
-this, `"python -u ./code/main.py -c ./code/config-DARPA_ET_1.json"`. We have defined 9 of these configuration file, for
+this, `"python -u ./code/main.py -c ./code/config-DARPA_ET_1.json"`. We have defined  of these configuration file, for
 each dataset, and run script is inside `run` file.
 
 ### Config run definition
