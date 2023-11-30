@@ -5,6 +5,23 @@ themselves against attacks in several steps. To identify the individual steps of
 technologies, among which we can include attack detection systems. Researchers or members of security teams have to deal
 with a large number of security events and alerts. A tool can help with this, which allows filtering relevant alerts and
 combining them into larger units without significant loss of information.
+## Prerequisites
+
+Ensure you have the following installed on your system:
+
+- Python (==3.8.5)
+- `pipenv`
+
+### Steps
+1. Clone repository
+2. Navigate to the project directory:
+   - `cd your-project`
+3. Install dependencies using pipenv:
+   - `pipenv install`
+4. Activate the virtual environment:
+   - `pipenv shell`
+5. Run using python -c <config_file>.json
+
 
 ## Dataset configuration
 
@@ -113,3 +130,14 @@ We need to specify config json for the dataset. In json there are required field
   ```
 
 </details>
+
+## License
+
+This project is licensed under the MIT - see the `code/LICENSE` file for details.
+
+Data in this project are licensed under the Attribution (CC BY) - see the `data/LICENSE` file for details.
+
+## Contact
+
+- tomas.bajtos@upjs.sk
+- frantisek.kurimsky@upjs.sk
