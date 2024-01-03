@@ -4,7 +4,12 @@ In this information age, we notice an increase in the quality of security threat
 themselves against attacks in several steps. To identify the individual steps of attackers, we use several security
 technologies, among which we can include attack detection systems. Researchers or members of security teams have to deal
 with a large number of security events and alerts. A tool can help with this, which allows filtering relevant alerts and
-combining them into larger units without significant loss of information.
+combining them into larger units without significant loss of information. We designed software that covers preprocessing and aggregation phases and is composed of three parts:
+- The first stage is the preprocessing of alerts. In this stage, alerts are prepared for the following stages.
+- The second stage is the alert filtration. It selects a smaller portion of analyzed data to reduce the number of alerts passing to other stages of analyses.
+- The third stage of the software flow involves consolidating the preprocessed alerts into aggregated alerts (aggregation stage).
+The tool can process csv output from Snort IDS.
+
 ## Prerequisites
 
 Ensure you have the following installed on your system:
